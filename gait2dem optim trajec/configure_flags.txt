@@ -1,0 +1,19 @@
+All of the below used MatlabInterface.site file, and had Matlab on the path.
+
+Linux configured with (using GCC 4.8.0 built --with-pic):
+../configure --enable-matlab-ma57 CC=/usr/local/gcc-4.8.0/bin/gcc \
+  CXX=/usr/local/gcc-4.8.0/bin/g++ F77=/usr/local/gcc-4.8.0/bin/gfortran
+
+Mac configured with:
+../configure --enable-matlab-ma57 CC=gcc --enable-matlab-static \
+  --with-blas='-framework vecLib' --with-lapack='-framework vecLib'
+In Matlab interface Makefile, on LDFLAGS line, comment out
+  -static-libgcc -static-libstdc++
+On LIBS = <...> line, delete -lgcc_eh and
+  -L/usr/local/gfortran/lib/gcc/x86_64-apple-darwin11/4.6.2/../../..
+(This is to statically link libgfortran but not libgcc or libstdc++,
+and dynamically link to the Apple libstdc++ in /usr/lib instead of
+the one that came with gfortran)
+
+Win32 and Win64 configured with:
+../configure --enable-matlab-ma57
